@@ -45,3 +45,11 @@ Finally, to annotate any remaining unannotated transcripts, we searched our tran
 `run_script uniprot_trembl_blastx.sh`
 
 `run_script filter_blastx_results_uniprot_trembl.sh`
+
+### Final assembly and annotation table
+
+The final assembly is available on NCBI's Transcriptome Shotgun Assembly site, under BioProject Number PRJNA776622.
+
+The final annotation table was reformatted to contain only one line per gene with relevant functional information, and this complete annotation table is uploaded as transcriptome_annotation.csv. This file is the same as Supplementary File 1 from Eaton et al. (2021). The detailed results from the ENSEMBL and UniProt annotations (prior to their concatenation into a single, more concise file) are also uploaded, as ENSEMBL_annotations.csv and UNIPROT_annotations.csv. 
+
+
