@@ -2,7 +2,7 @@
 
 indir="/home/aubkme/Pinfish_Transcriptome/blastn_annotation_june2021" # directory containing your BLAST output table, just get rid of the text within the quotes and fill in your appropriate directory
 blastfile="./sparus_full_gene.OUT" # the name of your output table from BLAST
-goinfo="sparus_gene_GO.csv" # the name of a file containing genes and GO term info from your organism that you BLASTed against. We can get this from ENSEMBL, I will show you
+goinfo="sparus_gene_GO.csv" # the name of a file containing genes and GO term info from your organism that you BLASTed against. We can get this from ENSEMBL
 mincoverage="50" # how much of the "query" sequence you want to be covered by the "match" sequence. This is the value you have to multiply by 3 to get the actual percentage.
 minpercentid="75" # how high the percent identity needs to be before you consider something a match
 evalue="1e-10" # how low the evalue needs to be before you consider something a match 
@@ -56,7 +56,6 @@ done
 # Trinity ID, Percent Identity of blast match, e-value of blast match, bit-score of blast match, query coverage of blast match, ensembl id, followed by the matching gene and go term info from your GO term file.
 
 # You can use the following code to find UN-annotated contigs that are not in your final annotation file, so they can then be BLASTed or searched for again with a different gene set (like from another species)
-# Fill in "name-of-your-transcriptome" with the name of your fasta file containing your transcriptome assembly
 # The annotated transcripts.txt file has been generated in the previous steps
 
 source /opt/asn/etc/asn-bash-profiles-special/modules.sh
