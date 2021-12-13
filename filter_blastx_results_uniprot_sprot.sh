@@ -56,7 +56,7 @@ do
 done
 
 # The final output will be a file called annotation_table.csv. The columns in this table will be, in the following order:
-# Trinity ID, Percent Identity of blast match, e-value of blast match, bit-score of blast match, query coverage of blast match, ensembl id, followed by the matching gene and go term info from your GO term file.
+# Trinity ID, Percent Identity of blast match, e-value of blast match, bit-score of blast match, query coverage of blast match, uniprot id, followed by the matching gene and go term info from your GO term file.
 
 # You can use the following code to find UN-annotated contigs that are not in your final annotation file, so they can then be BLASTed or searched for again with a different gene set (like from another species)
 # Fill in "name-of-your-transcriptome" with the name of your fasta file containing your transcriptome assembly
