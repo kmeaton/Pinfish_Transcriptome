@@ -52,4 +52,8 @@ The final assembly is available on NCBI's Transcriptome Shotgun Assembly site, u
 
 The final annotation table was reformatted to contain only one line per gene with relevant functional information, and this complete annotation table is uploaded as transcriptome_annotation.csv. This file is the same as Supplementary File 1 from Eaton et al. (2021). The detailed results from the ENSEMBL and UniProt annotations (prior to their concatenation into a single, more concise file) are also uploaded, as ENSEMBL_annotations.csv and UNIPROT_annotations.csv. 
 
+### Tag-Seq read processing
 
+Reads were processed following the pipeline available [here](https://github.com/z0on/tag-based_RNAseq).
+
+Differentially expressed genes were identified for both juveniles and adults with the program DESeq2 in R, using the scripts DESeq2_juveniles.R and DESeq2_adults.R, respectively. 
