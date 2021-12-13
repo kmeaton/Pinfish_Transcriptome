@@ -17,3 +17,31 @@ This generates our assembled transcriptome. Despite the fact that Transdecoder i
 Prior to annotation, we removed extraneous info from sequence headers using the following script:
 
 `run_script rename.sh`
+
+Then, we iteratively searched our transcript sequences via BLASTn against databases of known fish transcripts from (1) _Sparus aurata_, (2) _Larimichthys crocea_, (3) _Oreochromis niloticus_, and (4) _Danio rerio_, filtering the results after each search to only include high-quality matches, using the following scripts:
+
+`run_script sparus_blastn.sh`
+
+`run_script filter_blastn_results_sparus.sh`
+
+`run_script croaker_blastn.sh`
+
+`run_script filter_blastn_results_croaker.sh`
+
+`run_script tilapia_blastn.sh`
+
+`run_script filter_blastn_results_tilapia.sh`
+
+`run_script zebrafish_blastn.sh`
+
+`run_script filter_blastn_results_zebrafish.sh`
+
+Finally, to annotate any remaining unannotated transcripts, we searched our transcript sequences via BLASTx against the UniProt-SwissProt and TrEMBL databases (release 2021_01), running the following scripts in this order:
+
+`run_script uniprot_sprot_blastx.sh`
+
+`run_script filter_blastx_results_uniprot_sprot.sh`
+
+`run_script uniprot_trembl_blastx.sh`
+
+`run_script filter_blastx_results_uniprot_trembl.sh`
