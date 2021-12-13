@@ -1,5 +1,9 @@
 #!/bin/sh
 
+# KM Eaton, Auburn University, 2021
+# Code associated with Eaton et al. 2021 Frontiers in Ecology and Evolution
+# This code was run on the Alabama Supercomputer. 
+
 indir="/home/aubkme/Pinfish_Transcriptome/blastn_annotation_june2021" # directory containing your BLAST output table, just get rid of the text within the quotes and fill in your appropriate directory
 blastfile="./sparus_full_gene.OUT" # the name of your output table from BLAST
 goinfo="sparus_gene_GO.csv" # the name of a file containing genes and GO term info from your organism that you BLASTed against. We can get this from ENSEMBL
