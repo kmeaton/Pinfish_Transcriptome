@@ -4,5 +4,8 @@ The scripts in this repository were used to assemble and annotate the transcript
 ### Pinfish transcritpome assembly
 The transcriptome was assembled from raw Illumina reads, which were processed by running the following scripts (in this order):
 
-trimmomatic.sh
-trinity.sh
+`run_script trimmomatic.sh`
+
+`run_script trinity.sh`
+
+`run_script`
