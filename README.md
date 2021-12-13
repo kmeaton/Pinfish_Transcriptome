@@ -36,7 +36,7 @@ Then, we iteratively searched our transcript sequences via BLASTn against databa
 
 `run_script filter_blastn_results_zebrafish.sh`
 
-Finally, to annotate any remaining unannotated transcripts, we searched our transcript sequences via BLASTx against the UniProt-SwissProt and TrEMBL databases (release 2021_01), running the following scripts in this order:
+Finally, to annotate any remaining unannotated transcripts, we searched our transcript sequences via BLASTx against the UniProt-SwissProt and TrEMBL databases (release 2021_01), running the following scripts. Again, to add relevant annotation information, we used a set of files containing UniProt IDs linked to gene names and GO terms associated with these sequence IDs. These files were downloaded from UniProt and are also located in the annotation_information folder of this repository. 
 
 `run_script uniprot_sprot_blastx.sh`
 
