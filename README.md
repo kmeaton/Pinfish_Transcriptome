@@ -18,7 +18,7 @@ Prior to annotation, we removed extraneous info from sequence headers using the 
 
 `run_script rename.sh`
 
-Then, we iteratively searched our transcript sequences via BLASTn against databases of known fish transcripts from (1) _Sparus aurata_, (2) _Larimichthys crocea_, (3) _Oreochromis niloticus_, and (4) _Danio rerio_, filtering the results after each search to only include high-quality matches, using the following scripts:
+Then, we iteratively searched our transcript sequences via BLASTn against databases of known fish transcripts from (1) _Sparus aurata_, (2) _Larimichthys crocea_, (3) _Oreochromis niloticus_, and (4) _Danio rerio_ (each downloaded from ENSEMBL's BioMart), filtering the results after each search to only include high-quality matches, using the following scripts. To add relevant annotation information, we used a set of files containing ENSEMBL IDs (linked to the known transcript databases), as well as gene names, GO terms, and gene descriptions associated with these sequence IDs. These files (also downloaded from ENSEMBL's BioMart) are located in the annotation_information folder of this repository, and are named \*\_gene_GO.csv.  
 
 `run_script sparus_blastn.sh`
 
