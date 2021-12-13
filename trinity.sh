@@ -1,22 +1,20 @@
 #!/bin/sh
 
-#You HAVE to run this program from the scratch folder because the files it generates are huge! 
-#Do this by cd to /scratch/eaton_trinity, and run the script from a scripts folder in there
-#Moises says to specify a crazy huge amount of RAM (120GB), but slightly less time than usual (2-3 days instead of the usual 1 week), and it should run faster. Make sure you run it on the "Large" queue as well.
-#Queue: large    Wall time: 100:00:00   Mem: 120GB   Cores: 20
+# KM Eaton, Auburn University, 2021
+# Code associated with Eaton et al. 2021 Frontiers in Ecology and Evolution
+# This code was run on the Alabama Supercomputer. 
 
-#load the module
+# You HAVE to run this program from the scratch folder because the files it generates are huge! 
+# Do this by cd to /scratch/eaton_trinity, and run the script from a scripts folder in there
+# The following parameters worked well:
+# Queue: large    Wall time: 100:00:00   Mem: 150GB   Cores: 32
+
+# Load the module
 source /opt/asn/etc/asn-bash-profiles-special/modules.sh
 module load trinity/2.9.1
 
-#make sure your input files are not compressed (use gunzip to decompress gzipped files)
-#RUNNING THIS IN JAN 2021 FILES ARE ALREADY UNCOMPRESSED
-
-#gunzip ~/Pinfish_Transcriptome/cleaned_reads/pinfish_transcriptome_cutadapt_mate_1.fq.gz
-#gunzip ~/Pinfish_Transcriptome/cleaned_reads/pinfish_transcriptome_cutadapt_mate_2.fq.gz
-
-#run the program
-#options:
+# Run the program
+# Options:
 # seqType specifies the type of reads (fa or fq)
 # left specifies the file containing mate 1 reads
 # right specifies the file containing mate 2 reads
