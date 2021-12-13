@@ -6,7 +6,7 @@
 
 indir="/home/aubkme/Pinfish_Transcriptome/blastn_annotation_june2021" # directory containing your BLAST output table, just get rid of the text within the quotes and fill in your appropriate directory
 blastfile="./tilapia_full_gene.OUT" # the name of your output table from BLAST
-goinfo="niletilapia_gene_GO_nodups_5june21.csv" # the name of a file containing genes and GO term info from your organism that you BLASTed against. We can get this from ENSEMBL
+goinfo="niletilapia_gene_GO.csv" # the name of a file containing genes and GO term info from your organism that you BLASTed against. We can get this from ENSEMBL
 mincoverage="50" # how much of the "query" sequence you want to be covered by the "match" sequence. This is the value you have to multiply by 3 to get the actual percentage.
 minpercentid="75" # how high the percent identity needs to be before you consider something a match
 evalue="1e-10" # how low the evalue needs to be before you consider something a match 
