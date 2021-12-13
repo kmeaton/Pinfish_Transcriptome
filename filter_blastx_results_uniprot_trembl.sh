@@ -2,7 +2,7 @@
 
 indir="/home/aubkme/Pinfish_Transcriptome/blastn_annotation_june2021" # directory containing your BLAST output table, just get rid of the text within the quotes and fill in your appropriate directory
 blastfile="./uniprot_trembl.OUT" # the name of your output table from BLAST
-#goinfo="uniprot_trembl_gene_GO.csv" # the name of a file containing genes and GO term info from your organism that you BLASTed against. We can get this from ENSEMBL, I will show you
+goinfo="uniprot_trembl_gene_GO.csv" # the name of a file containing genes and GO term info from your organism that you BLASTed against. We can get this from ENSEMBL, I will show you
 # The GO info file for this was downloaded by taking a list of uniprot IDs and searching for them on uniprot's retrieve/ID mapping page (uniprot.org/uploadlists). I grabbed the uniprot IDs from the uniprot_sprot_ids.txt table.
 # I used awk to parse out the six-character IDs, which I then input into a file to be searched on uniprot. I searched uniprot IDs against uniprot KB, and then on the output page, I went to the "columns" tab to select/deselect what I wanted to include. I added columns for GO term numbers and phylum (to remove any non-vertebrate matches as those seem like they would probably be incorrect). 
 # I downloaded this to my local machine as an excel file, did find/replace to remove any commas, and then saved as a CSV to be uploaded back to the ASC.
@@ -44,37 +44,37 @@ cat uniprot_trembl_one_annotation_per_transcript.txt | awk '{print $1,$2,$3,$11,
 # Search for that gene's ENSEMBL ID in another file, which contains ENSEMBL IDs, gene names, GO terms, and GO accessions
 # Output the contents of that search into a temporary file
 # Then, for every line in that temporary file, add the associated trinity ID to the beginning of the line, and append this output to annotation_table.csv.
-#for gene in `cat uniprot_trembl_ids.txt`
-#do
-#	TRINITY=`echo "$gene" | awk -F, '{print $1}'`
-#	PID=`echo "$gene" | awk -F, '{print $3}'`
-#	EVAL=`echo "$gene" | awk -F, '{print $4}'`
-#	BIT=`echo "$gene" | awk -F, '{print $5}'`
-#	COV=`echo "$gene" | awk -F, '{print $6}'`	
-#	TREMBLI=`echo "$gene" | awk -F, '{print $2}' | awk -F'|' '{print $2}'`
-#	grep "$TREMBLI" $goinfo | sed "s/^$TREMBLI/$TRINITY,$PID,$EVAL,$BIT,$COV,$TREMBLI/g" >> trembl_annotation_table.csv
-#done
+for gene in `cat uniprot_trembl_ids.txt`
+do
+	TRINITY=`echo "$gene" | awk -F, '{print $1}'`
+	PID=`echo "$gene" | awk -F, '{print $3}'`
+	EVAL=`echo "$gene" | awk -F, '{print $4}'`
+	BIT=`echo "$gene" | awk -F, '{print $5}'`
+    COV=`echo "$gene" | awk -F, '{print $6}'`	
+	TREMBLI=`echo "$gene" | awk -F, '{print $2}' | awk -F'|' '{print $2}'`
+	grep "$TREMBLI" $goinfo | sed "s/^$TREMBLI/$TRINITY,$PID,$EVAL,$BIT,$COV,$TREMBLI/g" >> trembl_annotation_table.csv
+done
 
 # The final output will be a file called annotation_table.csv. The columns in this table will be, in the following order:
-# Trinity ID, Percent Identity of blast match, e-value of blast match, bit-score of blast match, query coverage of blast match, ensembl id, followed by the matching gene and go term info from your GO term file.
+# Trinity ID, Percent Identity of blast match, e-value of blast match, bit-score of blast match, query coverage of blast match, uniprot id, followed by the matching gene and go term info from your GO term file.
 
 # You can use the following code to find UN-annotated contigs that are not in your final annotation file, so they can then be BLASTed or searched for again with a different gene set (like from another species)
 # Fill in "name-of-your-transcriptome" with the name of your fasta file containing your transcriptome assembly
 # The annotated transcripts.txt file has been generated in the previous steps
 
-#source /opt/asn/etc/asn-bash-profiles-special/modules.sh
-#module load seqkit/0.10.1
+source /opt/asn/etc/asn-bash-profiles-special/modules.sh
+module load seqkit/0.10.1
 
-#seqkit grep -v -f uniprot_trembl_annotated_transcripts.txt uniprot_sprot_chordates_unannotated_contigs.fa -o uniprot_trembl_unannotated_contigs.fa
+seqkit grep -v -f uniprot_trembl_annotated_transcripts.txt uniprot_sprot_chordates_unannotated_contigs.fa -o uniprot_trembl_unannotated_contigs.fa
 
 # The results of this are a file which contains ALL of the matches from SwissProt (NOT JUST THE CHORDATES). 
 # This is a problem because BLAST matches to proteins outside of chordata are probably inaccurate. 
 # We can filter our results to only include chordates using the following code:
 
-#awk -F, '$13 ~ "Chordata" {print}' trembl_annotation_table.csv > trembl_annotation_table_chordates.csv
+awk -F, '$13 ~ "Chordata" {print}' trembl_annotation_table.csv > trembl_annotation_table_chordates.csv
 
-#awk -F, '{print $1}' trembl_annotation_table_chordates.csv > uniprot_trembl_annotated_transcripts_chordates.txt
+awk -F, '{print $1}' trembl_annotation_table_chordates.csv > uniprot_trembl_annotated_transcripts_chordates.txt
 
-#seqkit grep -v -f uniprot_trembl_annotated_transcripts_chordates.txt uniprot_sprot_chordates_unannotated_contigs.fa -o uniprot_trembl_chordates_unannotated_contigs.fa
+seqkit grep -v -f uniprot_trembl_annotated_transcripts_chordates.txt uniprot_sprot_chordates_unannotated_contigs.fa -o uniprot_trembl_chordates_unannotated_contigs.fa
 
 
