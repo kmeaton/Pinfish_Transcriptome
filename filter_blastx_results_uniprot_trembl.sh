@@ -2,7 +2,7 @@
 
 indir="/home/aubkme/Pinfish_Transcriptome/blastn_annotation_june2021" # directory containing your BLAST output table, just get rid of the text within the quotes and fill in your appropriate directory
 blastfile="./uniprot_trembl.OUT" # the name of your output table from BLAST
-goinfo="uniprot_trembl_gene_GO.csv" # the name of a file containing genes and GO term info from your organism that you BLASTed against. We can get this from ENSEMBL, I will show you
+goinfo="uniprot_trembl_all_gene_GO.csv" # the name of a file containing genes and GO term info from your organism that you BLASTed against. We can get this from ENSEMBL, I will show you
 # The GO info file for this was downloaded by taking a list of uniprot IDs and searching for them on uniprot's retrieve/ID mapping page (uniprot.org/uploadlists). I grabbed the uniprot IDs from the uniprot_sprot_ids.txt table.
 # I used awk to parse out the six-character IDs, which I then input into a file to be searched on uniprot. I searched uniprot IDs against uniprot KB, and then on the output page, I went to the "columns" tab to select/deselect what I wanted to include. I added columns for GO term numbers and phylum (to remove any non-vertebrate matches as those seem like they would probably be incorrect). 
 # I downloaded this to my local machine as an excel file, did find/replace to remove any commas, and then saved as a CSV to be uploaded back to the ASC.
