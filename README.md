@@ -8,4 +8,4 @@ The transcriptome was assembled from raw Illumina reads, which were processed by
 
 `run_script trinity.sh`
 
-`run_script`
+`run_script cd-hit.sh`
