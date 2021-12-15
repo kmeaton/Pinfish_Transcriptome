@@ -23,6 +23,7 @@ all(rownames(livercoldata) == colnames(livercountdata))
 all(rownames(musclecoldata) == colnames(musclecountdata))
 
 # Liver dataset
+# Wald test for pairwise comparisons
 Ldds<-DESeqDataSetFromMatrix(countData = livercountdata, colData = livercoldata, design =~ treatment)
 Ldds$treatment <- relevel(Ldds$treatment, ref = "21")
 Ldds<-DESeq(Ldds)
@@ -66,22 +67,19 @@ summary(Lres_24_v_21)
 #low counts [2]     : 101585, 83%
 #(mean count < 2)
 
-# Liver validation
-Lvsd<-vst(Ldds)
-LvsdMatrix<-getVarianceStabilizedData(Ldds)
-head(LvsdMatrix)
-LsampleDists<-dist(t(LvsdMatrix))
-LsampleDistMatrix<-as.matrix(LsampleDists)
-rownames(LsampleDistMatrix)<-paste(colnames(LvsdMatrix))
-colnames(LsampleDistMatrix)<-paste(colnames(LvsdMatrix))
-colors<-colorRampPalette(rev(brewer.pal(9,"Blues")))(250)
-pheatmap(LsampleDistMatrix,
-         clustering_distance_rows= LsampleDists,
-         clustering_distance_cols = LsampleDists,
-         col=colors)
-
-# PCA of all genes
-plotPCA(Lvsd, intgroup=c("treatment"))
+# LRT and PCA
+# Plot just the significant genes on the PCA
+liverLRT<-DESeq(Ldds, test="LRT", reduced=~1) # First run your likelihood ratio test
+liverLRTres<-results(liverLRT, alpha = 0.05) # Generate your results object
+summary(liverLRTres)
+liverLRTvsd<-vst(liverLRT) # Transform the count data using variance stabilizing transformation
+# We want just the significant genes, so isolate them here
+liverLRTsigs<-subset(liverLRTres, padj < 0.05)
+liver_sigs<-rownames(liverLRTsigs) # Isolate just the names of the significant genes
+VSD.liver.subset <- liverLRTvsd[rownames(liverLRTvsd) %in% liver_sigs, ] # Extract transformed counts for significant genes
+summary(VSD.liver.subset) # Make sure you've got them and they are correct
+# Plot PCA of just significant genes, color by treatment
+plotPCA(VSD.liver.subset, intgroup = "treatment")
 
 # Muscle
 Mdds<-DESeqDataSetFromMatrix(countData = musclecountdata, colData = musclecoldata, design =~ treatment)
@@ -127,33 +125,17 @@ summary(Mres_24_v_21)
 #low counts [2]     : 82635, 82%
 #(mean count < 1)
 
-# Muscle validation
-Mvsd<-vst(Mdds)
-MvsdMatrix<-getVarianceStabilizedData(Mdds)
-MsampleDists<-dist(t(MvsdMatrix))
-MsampleDistMatrix<-as.matrix(MsampleDists)
-rownames(MsampleDistMatrix)<-paste(colnames(MvsdMatrix))
-colnames(MsampleDistMatrix)<-paste(colnames(MvsdMatrix))
-colors<-colorRampPalette(rev(brewer.pal(9,"Blues")))(250)
-pheatmap(MsampleDistMatrix,
-         clustering_distance_rows=MsampleDists,
-         clustering_distance_cols = MsampleDists,
-         col=colors)
-
-# PCA of all genes
-plotPCA(Mvsd, intgroup = "treatment")
-
-# PCA
+# LRT and PCA
 # Plot just the significant genes on the PCA
-musLRT<-DESeq(Mdds, test="LRT", reduced=~1)
-musLRTres<-results(musLRT, alpha = 0.05)
+musLRT<-DESeq(Mdds, test="LRT", reduced=~1) # First run your likelihood ratio test
+musLRTres<-results(musLRT, alpha = 0.05) # Generate your results object
 summary(musLRTres)
-musLRTvsd<-vst(musLRT)
-# We want just the significant genes
+musLRTvsd<-vst(musLRT) # Transform the count data using variance stabilizing transformation
+# We want just the significant genes, so isolate them here
 musLRTsigs<-subset(musLRTres, padj < 0.05)
-mus_sigs<-rownames(musLRTsigs)
-VSD.mus.subset <- musLRTvsd[rownames(musLRTvsd) %in% mus_sigs, ]
-summary(VSD.mus.subset)
+mus_sigs<-rownames(musLRTsigs) # Isolate just the names of the significant genes
+VSD.mus.subset <- musLRTvsd[rownames(musLRTvsd) %in% mus_sigs, ] # Extract transformed counts for significant genes
+summary(VSD.mus.subset) # Make sure you've got them and they are correct
 # Plot PCA of just significant genes, color by treatment
 plotPCA(VSD.mus.subset, intgroup = "treatment")
 
