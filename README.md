@@ -1,5 +1,5 @@
 # Pinfish transcriptome and Tag-Seq read processing
-The scripts in this repository were used to assemble and annotate the transcriptome of the pinfish (_Lagodon rhomboides_) and to analyze Tag-Seq expression data from Eaton et al. (2021). 
+The scripts in this repository were used to assemble and annotate the transcriptome of the pinfish (_Lagodon rhomboides_) and to analyze Tag-Seq expression data from Eaton et al. (2022). 
 
 ### Pinfish transcriptome assembly
 The transcriptome was assembled from raw Illumina reads, which were processed by running the following scripts on the Alabama Supercomputer as such (in this order):
