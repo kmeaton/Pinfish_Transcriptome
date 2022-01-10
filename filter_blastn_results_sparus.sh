@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # KM Eaton, Auburn University, 2021
-# Code associated with Eaton et al. 2021 Frontiers in Ecology and Evolution
+# Code associated with Eaton et al. 2022 Frontiers in Ecology and Evolution
 # This code was run on the Alabama Supercomputer. 
 
 indir="/home/aubkme/Pinfish_Transcriptome/blastn_annotation_june2021" # directory containing your BLAST output table, just get rid of the text within the quotes and fill in your appropriate directory
