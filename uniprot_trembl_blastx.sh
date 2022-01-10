@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # KM Eaton, Auburn University, 2021
-# Code associated with Eaton et al. 2021 Frontiers in Ecology and Evolution
+# Code associated with Eaton et al. 2022 Frontiers in Ecology and Evolution
 # This code was run on the Alabama Supercomputer. 
 # This will take EXTREMELY long if you run it like this, it might be best to break up your query file into several smaller files, parallelize several smaller BLASTs, and then concatenate the results. 
 
