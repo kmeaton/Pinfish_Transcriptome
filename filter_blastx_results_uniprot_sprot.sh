@@ -36,12 +36,12 @@ do
     rm sorted.txt
 done
 
-# From the one_annotation_per_transcript file, print ONLY the TRINITY_ID, matching ENSEMBL_ID, percent identity, e-value, bit-score, and query coverage
+# From the one_annotation_per_transcript file, print ONLY the TRINITY_ID, matching SPROT_ID, percent identity, e-value, bit-score, and query coverage
 # Replace any spaces in this file with commas, because spaces are stupid and commas work wonders, output this into a file called ids.txt
 cat uniprot_sprot_one_annotation_per_transcript.txt | awk '{print $1,$2,$3,$11,$12,$13}' | sed -r 's/\s+/,/g' > uniprot_sprot_ids.txt
 
 # Finally, for each gene in the ids.txt file (contains ensembl and trinity IDs), do the following:
-# Search for that gene's ENSEMBL ID in another file, which contains ENSEMBL IDs, gene names, GO terms, and GO accessions
+# Search for that gene's SPROT ID in another file, which contains SPROT IDs, gene names, GO terms, and GO accessions
 # Output the contents of that search into a temporary file
 # Then, for every line in that temporary file, add the associated trinity ID to the beginning of the line, and append this output to annotation_table.csv.
 for gene in `cat uniprot_sprot_ids.txt`
