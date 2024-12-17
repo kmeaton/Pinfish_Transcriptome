@@ -1,0 +1,63 @@
+# Re-annotate pinfish transcriptome using updated reference sequences
+# Will use RefSeq Sparus aurata genes and RefSeq Acanthopagrus latus genes
+
+# Download data from NCBI.
+# Using NCBI FTP site: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/880/675/GCF_900880675.1_fSpaAur1.1/
+# Download file with GO terms associated with each gene: GCF_900880675.1_fSpaAur1.1_gene_ontology.gaf.gz
+# Download RNA from genomic sequences: GCF_900880675.1_fSpaAur1.1_rna_from_genomic.fna.gz (unzipped and uploaded to cluster under name SpaAur1.1.fa)
+# A. latus also from NCBI FTP site: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/904/848/185/GCF_904848185.1_fAcaLat1.1/
+# GO terms: GCF_904848185.1_fAcaLat1.1_gene_ontology.gaf.gz
+# RNA: GCF_904848185.1_fAcaLat1.1_rna_from_genomic.fna.gz (unzipped and uploaded to cluster under filename AcaLat1.1.fa)
+
+# Edit names in FASTA file to remove redundant info, spaces, etc.
+# I just want to keep the first word in the fasta header, the "gene ID", and the "product" which is basically the gene description
+# Then I'm removing spaces from the file and replacing with either commas or -
+cat SpaAur1.1.fa | sed -E 's/(lcl[^ ]+).*gene=([^]]+).*product=([^]]+).*/\1 gene=\2 product=\3/' | sed 's/ gene/,gene/g' | sed 's/ product/,product/g' | sed 's/ /-/g' > SpaAur1.1-cleaned-headers.fa
+cat AcaLat1.1.fa | sed -E 's/(lcl[^ ]+).*gene=([^]]+).*product=([^]]+).*/\1 gene=\2 product=\3/' | sed 's/ gene/,gene/g' | sed 's/ product/,product/g' | sed 's/ /-/g' > AcaLat1.1-cleaned-headers.fa
+
+# BLAST transcriptome against database of S. aurata RefSeq sequences
+# This was run on Auburn University's Easley Cluster on Dec. 17, 2024
+module load blast/2.13.0
+makeblastdb -in SpaAur1.1-cleaned-headers.fa -input_type fasta -dbtype nucl -out sparus_full_gene_17dec24.fa.DB
+blastn -db sparus_full_gene_17dec24.DB -query Transcriptome-Sequences-Trimmed-Names.fa -out sparus_full_gene.OUT -evalue 1e-10 -num_threads 8 -outfmt '6 std qcov' -max_target_seqs 5
+
+# Filter S. aurata matches to only retain "good" matches
+# The first AWK call only retains matches where QCOV >= 30%, the second AWK call further filters based on percent identity >= 75%
+cat sparus_full_gene.OUT | awk '$13 >= 30 {print $0}' | awk '$3 >= 75 {print $0}' > multiple_matches_lowQCOV.txt
+# Get a list of annotated genes in the multiple_matches.txt file
+cat multiple_matches_lowQCOV.txt | awk '{print $1}' | sort | uniq > annotated_transcripts.txt
+# For each annotated gene pick the "best" annotation (based on bit-score) and output that to a new file
+# This loop is clunky and kinda takes a while but it works
+for transcript in `cat annotated_transcripts.txt`
+do
+    egrep "$transcript\s" multiple_matches_lowQCOV.txt > temp.txt
+    sort -nr -k 12 temp.txt > sorted.txt
+    head -1 sorted.txt >> one_annotation_per_transcript.txt
+    rm temp.txt
+    rm sorted.txt
+done
+
+# Repeat process above for genes that were not successfully annotated from S. aurata database, now use the A. latus database
+# Begin by identifying unannotated contigs, using the program seqkit
+# Again on Easley cluster at Auburn
+module load seqkit
+seqkit grep -v -f annotated_transcripts.txt Transcriptome-Sequences-Trimmed-Names.fa -o unannotated-contigs.fa
+
+# BLAST unannotated contigs against database of Acanthopagrus latus RefSeq sequences
+module load blast/2.13.0
+makeblastdb -in AcaLat1.1-cleaned-headers.fa -input_type fasta -dbtype nucl -out acalat_full_gene_17dec24.fa.DB
+blastn -db acalat_full_gene_17dec24.fa.DB -query unannotated-contigs.fa -out acalat_full_gene.OUT -evalue 1e-10 -num_threads 8 -outfmt '6 std qcovhsp' -max_target_seqs 5
+
+# Filter these results same as for S. aurata
+cat acalat_full_gene.OUT | awk '$13 >= 50 {print $0}' | awk '$3 >= 75 {print $0}' > a_multiple_matches.txt
+# Get a list of annotated genes in the multiple_matches.txt file
+cat a_multiple_matches.txt | awk '{print $1}' | sort | uniq > a_annotated_transcripts.txt
+# For each annotated gene pick the "best" annotation (based on bit-score) and output that to a new file
+for transcript in `cat a_annotated_transcripts.txt`
+do
+    egrep "$transcript\s" a_multiple_matches.txt > temp.txt
+    sort -nr -k 12 temp.txt > sorted.txt
+    head -1 sorted.txt >> one_annotation_per_transcript.txt
+    rm temp.txt
+    rm sorted.txt
+done
