@@ -61,3 +61,6 @@ do
     rm temp.txt
     rm sorted.txt
 done
+
+# This resulted in annotations for 75,085 of the genes in the transcriptome
+# Can also BLAST against UniProt database
